@@ -1,41 +1,83 @@
 package main
 
 import (
+	"embed"
 	"fmt"
-	"os"
+	"net/http"
+	"strconv"
+	"text/template"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"samoseto.com/minesweeper/internal/game"
 )
 
+//go:embed templates
+var templates embed.FS
+
 func main() {
-	game := game.NewGame(10, 10, 10)
-	printBoard(game.UserBoard)
+	router := chi.NewRouter()
+	router.Use(middleware.Recoverer)
 
-	for {
-		fmt.Printf("Remaining fields: %d\n", game.Remaining())
-		var selectedRow int
-		var selectedCol int
-		fmt.Println("Select a row: ")
-		_, _ = fmt.Scanf("%d", &selectedRow)
-		fmt.Println("Select a column: ")
-		_, _ = fmt.Scanf("%d", &selectedCol)
-		game.ClickField(selectedRow, selectedCol)
-		printBoard(game.UserBoard)
-		if game.IsGameOver {
-			printBoard(game.RealBoard)
-			fmt.Println("Game over!")
+	router.Get("/", showIndexPage)
+	router.Get("/boardclick/{row}/{col}", clickField)
+	router.Post("/newgame", newGame)
 
-			if game.IsWon {
-				fmt.Println("You won!")
-			} else if game.IsLost {
-				fmt.Println("You lost!")
-			}
+	err := http.ListenAndServe(":8081", router)
+	catch(err)
+}
 
-			os.Exit(0)
-		}
+func catch(err error) {
+	if err != nil {
+		panic(err)
 	}
 }
 
+func ParseFiles(filenames ...string) (*template.Template, error) {
+	t, err := template.ParseFS(templates, filenames...)
+	if err != nil {
+		return nil, err
+	}
+
+	return t, nil
+}
+
+func newGame(w http.ResponseWriter, r *http.Request) {
+	game := game.NewGame(10, 10, 10)
+
+	t, err := ParseFiles("templates/board2.html")
+	catch(err)
+
+	err = t.Execute(w, *game)
+	catch(err)
+}
+
+func clickField(w http.ResponseWriter, r *http.Request) {
+	row, _ := strconv.Atoi(chi.URLParam(r, "row"))
+	col, _ := strconv.Atoi(chi.URLParam(r, "col"))
+
+	game.GetGamePtr().ClickField(row, col)
+
+	t, err := ParseFiles("templates/board2.html")
+	catch(err)
+
+	err = t.Execute(w, *game.GetGamePtr())
+	catch(err)
+}
+
+func showIndexPage(w http.ResponseWriter, r *http.Request) {
+	data := game.GetGamePtr()
+	if data == nil {
+		data = game.NewGame(10, 10, 10)
+	}
+	t, err := ParseFiles("templates/layout.html", "templates/index.html", "templates/board.html")
+	catch(err)
+
+	err = t.Execute(w, *data)
+	catch(err)
+}
+
+// For debug purposes
 func printBoard(board [][]int) {
 	fmt.Printf("  ")
 	for i := 0; i < len(board); i++ {

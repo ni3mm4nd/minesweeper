@@ -2,7 +2,7 @@ package game
 
 import "math/rand"
 
-var GamePtr *gameStruct
+var gamePtr *gameStruct
 
 type gameStruct struct {
 	UserBoard     [][]int
@@ -18,8 +18,12 @@ type gameStruct struct {
 	Remaining     func() int
 }
 
+func GetGamePtr() *gameStruct {
+	return gamePtr
+}
+
 func NewGame(height int, width int, numberOfMines int) *gameStruct {
-	GamePtr = &gameStruct{
+	gamePtr = &gameStruct{
 		UserBoard:     [][]int{},
 		RealBoard:     [][]int{},
 		Height:        height,
@@ -30,19 +34,23 @@ func NewGame(height int, width int, numberOfMines int) *gameStruct {
 		IsGameOver:    false,
 		IsWon:         false,
 		IsLost:        false,
-		Remaining:     func() int { return GamePtr.TotalFields - GamePtr.Opened - GamePtr.NumberOfMines },
+		Remaining:     func() int { return gamePtr.TotalFields - gamePtr.Opened - gamePtr.NumberOfMines },
 	}
 
-	GamePtr.TotalFields = height * width
-	GamePtr.RealBoard = createBoard(height, width)
-	fillWithMines(GamePtr.RealBoard, numberOfMines)
-	enrichBoard(GamePtr.RealBoard)
-	GamePtr.UserBoard = createBoard(height, width)
+	gamePtr.TotalFields = height * width
+	gamePtr.RealBoard = createBoard(height, width)
+	fillWithMines(gamePtr.RealBoard, numberOfMines)
+	enrichBoard(gamePtr.RealBoard)
+	gamePtr.UserBoard = createBoard(height, width)
 
-	return GamePtr
+	return gamePtr
 }
 
 func (g *gameStruct) ClickField(row int, col int) {
+	if g.IsGameOver {
+		return
+	}
+
 	if g.UserBoard[row][col] == -3 || g.UserBoard[row][col] > 0 {
 		// fmt.Println("You can not click on already uncovered field!")
 		return

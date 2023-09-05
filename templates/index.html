@@ -1,0 +1,19 @@
+{{define "title"}}Minesweeper{{end}}
+
+{{define "body"}}
+<h1>Minesweeper</h1>
+
+<div id="menu">
+    <button hx-post="/newgame" hx-swap="outerHTML" hx-target="#board">New Game</button>
+</div>
+<p></p>
+
+{{block "board" .}}{{end}}
+{{end}}
+
+{{define "css"}}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+{{end}}

@@ -1,0 +1,16 @@
+{{ define "board" }}
+<div id="board">
+    <table>
+        {{ range $iIndex,$iValue :=.UserBoard }}
+            <tr>
+            {{ range $jIndex,$jValue := . }}
+                <th style="height: 20px; width: 20px" hx-get="/boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
+                    {{ if eq $jValue 0 }} {{ end }}
+                    <!-- {{ if eq $jValue 1 }}X{{ end }} -->
+                </th>
+            {{ end }}
+            </tr>
+        {{ end }}
+    </table>
+</div>
+{{ end }}
