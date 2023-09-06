@@ -13,7 +13,7 @@
         {{ range $iIndex,$iValue := $board }}
             <tr>
             {{ range $jIndex,$jValue := . }}
-                <th style="height: 20px; width: 20px;{{ if eq $jValue -3 }} background-color: grey;{{ end }}{{ if eq $jValue -1 }} background-color: red;{{ end }}" hx-get="/boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
+                <th style="height: 2em; width: 2em;cursor: pointer;border: solid #808080;box-sizing: border-box;{{ if eq $jValue -3 }} background-color: grey;{{ end }}{{ if eq $jValue -1 }} background-color: red;{{ end }}" hx-get="/boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
                     {{ if eq $jValue -1 }}*{{ end }}
                     {{ if eq $jValue 0 }} {{ end }}
                     {{ if eq $jValue 1 }}1{{ end }}

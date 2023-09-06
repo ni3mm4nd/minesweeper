@@ -77,6 +77,12 @@ func (g *gameStruct) ClickField(row int, col int) {
 		return
 	}
 
+	if g.TotalFields == (g.NumberOfMines + g.Opened) {
+		g.IsGameOver = true
+		g.IsWon = true
+		return
+	}
+
 	if g.RealBoard[row][col] == 0 {
 		g.UserBoard[row][col] = -3
 
@@ -141,12 +147,6 @@ func (g *gameStruct) ClickField(row int, col int) {
 	}
 
 	g.UserBoard[row][col] = g.RealBoard[row][col]
-
-	if g.TotalFields == (g.NumberOfMines + g.Opened) {
-		g.IsGameOver = true
-		g.IsWon = true
-		return
-	}
 }
 
 func enrichBoard(board [][]int) {
