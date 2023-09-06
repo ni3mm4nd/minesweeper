@@ -1,6 +1,8 @@
 package game
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 var gamePtr *gameStruct
 
@@ -215,13 +217,26 @@ func createBoard(height int, width int) [][]int {
 }
 
 func fillWithMines(board [][]int, numberOfMines int) {
-	for i := 0; i < numberOfMines; i++ {
-		for {
-			var field int = board[rand.Intn(len(board))][rand.Intn(len(board[0]))]
-			if field != -1 {
-				board[rand.Intn(len(board))][rand.Intn(len(board[0]))] = -1
-				break
-			}
+	remainingMines := numberOfMines
+	rows := len(board)
+	cols := len(board[0])
+
+	if remainingMines > rows*cols {
+		remainingMines = rows * cols
+	}
+
+	for {
+		randRow := rand.Intn(rows)
+		randCol := rand.Intn(cols)
+
+		var field int = board[randRow][randCol]
+		if field != -1 {
+			board[randRow][randCol] = -1
+			remainingMines--
+		}
+
+		if remainingMines == 0 {
+			break
 		}
 	}
 }

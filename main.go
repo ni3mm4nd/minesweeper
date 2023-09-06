@@ -43,7 +43,11 @@ func ParseFiles(filenames ...string) (*template.Template, error) {
 }
 
 func newGame(w http.ResponseWriter, r *http.Request) {
-	game := game.NewGame(10, 10, 10)
+	rows, _ := strconv.Atoi(r.FormValue("rows"))
+	cols, _ := strconv.Atoi(r.FormValue("cols"))
+	mines, _ := strconv.Atoi(r.FormValue("mines"))
+
+	game := game.NewGame(rows, cols, mines)
 
 	t, err := ParseFiles("templates/board2.html")
 	catch(err)

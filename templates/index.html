@@ -4,9 +4,23 @@
 <h1>Minesweeper</h1>
 
 <div id="menu">
-    <button hx-post="/newgame" hx-swap="outerHTML" hx-target="#board">New Game</button>
+    <form hx-post="/newgame" hx-swap="outerHTML" hx-target="#board">
+        <label for="rows">Rows
+        <input id="rows" name="rows" type="number" value="10">
+        </label>
+        <br/>
+        <label for="cols">Cols
+        <input id="cols" name="cols" type="number" value="10">
+        </label>
+        <br/>
+        <label for="mines">Mines
+        <input id="mines" name="mines" type="number" value="10">
+        </label>
+        <br/>
+        <input type="submit" value="New Game">
+    </form>
 </div>
-<p></p>
+<br/>
 
 {{block "board" .}}{{end}}
 {{end}}
