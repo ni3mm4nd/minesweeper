@@ -68,7 +68,7 @@ func clickField(w http.ResponseWriter, r *http.Request) {
 func showIndexPage(w http.ResponseWriter, r *http.Request) {
 	data := game.GetGamePtr()
 	if data == nil {
-		data = game.NewGame(10, 10, 10)
+		data = game.NewDefaultGame()
 	}
 	t, err := ParseFiles("templates/layout.html", "templates/index.html", "templates/board.html")
 	catch(err)

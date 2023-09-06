@@ -1,16 +1,41 @@
 {{ define "board" }}
 <div id="board">
+    {{ $board := .UserBoard }}
+
+    {{ if eq .IsGameOver true }}
+        {{ $board = .RealBoard }}
+    {{ else }}
+        {{ $board = .UserBoard }}
+    {{ end }}
+
+    <p>Moves left: {{ .MovesLeft }}</p>
+
     <table>
-        {{ range $iIndex,$iValue :=.UserBoard }}
+        {{ range $iIndex,$iValue := $board }}
             <tr>
             {{ range $jIndex,$jValue := . }}
-                <th style="height: 20px; width: 20px" hx-get="/boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
+                <th style="height: 20px; width: 20px;{{ if eq $jValue -3 }} background-color: grey;{{ end }}{{ if eq $jValue -1 }} background-color: red;{{ end }}" hx-get="/boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
+                    {{ if eq $jValue -1 }}*{{ end }}
                     {{ if eq $jValue 0 }} {{ end }}
-                    <!-- {{ if eq $jValue 1 }}X{{ end }} -->
+                    {{ if eq $jValue 1 }}1{{ end }}
+                    {{ if eq $jValue 2 }}2{{ end }}
+                    {{ if eq $jValue 3 }}3{{ end }}
+                    {{ if eq $jValue 4 }}4{{ end }}
+                    {{ if eq $jValue 5 }}5{{ end }}
+                    {{ if eq $jValue 6 }}6{{ end }}
+                    {{ if eq $jValue 7 }}7{{ end }}
+                    {{ if eq $jValue 8 }}8{{ end }}
+                    {{ if eq $jValue -3 }} {{ end }}
                 </th>
             {{ end }}
             </tr>
         {{ end }}
     </table>
+
+    {{ if eq .IsGameOver true}}
+        <p>Game Over</p>
+        {{ if .IsWon}}<h1>YOU WIN!</h1>{{end}}
+        {{ if .IsLost}}<h1>YOU LOSE!</h1>{{end}}
+    {{ end }}
 </div>
 {{ end }}

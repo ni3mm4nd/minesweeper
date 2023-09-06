@@ -15,11 +15,14 @@ type gameStruct struct {
 	IsGameOver    bool
 	IsWon         bool
 	IsLost        bool
-	Remaining     func() int
 }
 
 func GetGamePtr() *gameStruct {
 	return gamePtr
+}
+
+func NewDefaultGame() *gameStruct {
+	return NewGame(10, 10, 10)
 }
 
 func NewGame(height int, width int, numberOfMines int) *gameStruct {
@@ -34,7 +37,6 @@ func NewGame(height int, width int, numberOfMines int) *gameStruct {
 		IsGameOver:    false,
 		IsWon:         false,
 		IsLost:        false,
-		Remaining:     func() int { return gamePtr.TotalFields - gamePtr.Opened - gamePtr.NumberOfMines },
 	}
 
 	gamePtr.TotalFields = height * width
@@ -44,6 +46,10 @@ func NewGame(height int, width int, numberOfMines int) *gameStruct {
 	gamePtr.UserBoard = createBoard(height, width)
 
 	return gamePtr
+}
+
+func (g gameStruct) MovesLeft() int {
+	return g.TotalFields - g.Opened - g.NumberOfMines
 }
 
 func (g *gameStruct) ClickField(row int, col int) {
