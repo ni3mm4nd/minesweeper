@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"flag"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -16,6 +17,10 @@ import (
 var templates embed.FS
 
 func main() {
+
+	port := flag.Int("port", 8081, "port number to listen on")
+	flag.Parse()
+
 	router := chi.NewRouter()
 	router.Use(middleware.Recoverer)
 
@@ -23,7 +28,8 @@ func main() {
 	router.Get("/boardclick/{row}/{col}", clickField)
 	router.Post("/newgame", newGame)
 
-	err := http.ListenAndServe(":8081", router)
+	fmt.Printf("Listening on localhost:%d\n", *port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", *port), router)
 	catch(err)
 }
 
