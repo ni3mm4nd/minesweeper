@@ -51,7 +51,13 @@ func NewGame(height int, width int, numberOfMines int) *gameStruct {
 }
 
 func (g gameStruct) MovesLeft() int {
-	return g.TotalFields - g.Opened - g.NumberOfMines
+	movesLeft := g.TotalFields - g.Opened - g.NumberOfMines
+
+	if movesLeft < 0 {
+		movesLeft = 0
+	}
+
+	return movesLeft
 }
 
 func (g *gameStruct) ClickField(row int, col int) {
@@ -209,6 +215,14 @@ func enrichBoard(board [][]int) {
 }
 
 func createBoard(height int, width int) [][]int {
+	if height < 1 {
+		height = 1
+	}
+
+	if width < 1 {
+		width = 1
+	}
+
 	board := make([][]int, height)
 	for i := 0; i < height; i++ {
 		board[i] = make([]int, width)
@@ -220,6 +234,10 @@ func fillWithMines(board [][]int, numberOfMines int) {
 	remainingMines := numberOfMines
 	rows := len(board)
 	cols := len(board[0])
+
+	if remainingMines < 1 {
+		remainingMines = 1
+	}
 
 	if remainingMines > rows*cols {
 		remainingMines = rows * cols
