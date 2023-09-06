@@ -55,7 +55,7 @@ func newGame(w http.ResponseWriter, r *http.Request) {
 
 	game := game.NewGame(rows, cols, mines)
 
-	t, err := ParseFiles("templates/board2.html")
+	t, err := ParseFiles("templates/board.html")
 	catch(err)
 
 	err = t.Execute(w, *game)
@@ -68,7 +68,7 @@ func clickField(w http.ResponseWriter, r *http.Request) {
 
 	game.GetGamePtr().ClickField(row, col)
 
-	t, err := ParseFiles("templates/board2.html")
+	t, err := ParseFiles("templates/board.html")
 	catch(err)
 
 	err = t.Execute(w, *game.GetGamePtr())

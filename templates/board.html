@@ -1,4 +1,3 @@
-{{ define "board" }}
 <div id="board">
     {{ $board := .UserBoard }}
 
@@ -38,4 +37,3 @@
         {{ if .IsLost}}<h1>YOU LOSE!</h1>{{end}}
     {{ end }}
 </div>
-{{ end }}
