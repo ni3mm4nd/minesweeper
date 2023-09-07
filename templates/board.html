@@ -34,7 +34,7 @@
     {{ if eq .IsGameOver true}}
         <p>Game Over</p>
         {{ if .IsWon}}
-            <dialog open style="position: relative; background: aquamarine;">
+            <dialog id="dialog" style="position: relative; background: aquamarine;">
                 <h1>YOU WON!</h1>
                 <form method="dialog">
                     <button>OK</button>
@@ -42,12 +42,17 @@
             </dialog>
         {{end}}
         {{ if .IsLost}}
-            <dialog open style="position: relative; background: orangered; color: white;">
+            <dialog id="dialog" style="position: relative; background: orangered; color: white;">
                 <h1>☠ YOU LOSE! ☠</h1>
                 <form method="dialog">
                     <button>OK</button>
                 </form>
             </dialog>
         {{end}}
+
+        <script>
+            var dialog = document.querySelector("dialog")
+            dialog.showModal() // Opens a modal
+        </script>
     {{ end }}
 </div>
