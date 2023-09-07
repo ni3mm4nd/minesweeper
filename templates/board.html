@@ -14,7 +14,7 @@
             <tr>
             {{ range $jIndex,$jValue := . }}
                 <th class="myClass-{{ $jValue }}" style="height: 2em; width: 2em;cursor: pointer;border: 2px outset #ececec;box-sizing: border-box;" hx-get="/boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
-                    {{ if eq $jValue -1 }}*{{ end }}
+                    {{ if eq $jValue -1 }}☠{{ end }}
                     {{ if eq $jValue 0 }} {{ end }}
                     {{ if eq $jValue 1 }}1{{ end }}
                     {{ if eq $jValue 2 }}2{{ end }}
