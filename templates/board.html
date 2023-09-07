@@ -11,9 +11,23 @@
 
     <table>
         {{ range $iIndex,$iValue := $board }}
+        {{ if eq $iIndex 0 }}
             <tr>
+                {{ range $jIndex,$jValue := . }}
+                    {{ if eq $jIndex 0 }}
+                        <th class="mine-field"></th>
+                        <th class="mine-field">{{ $jIndex }}</th>
+                    {{ else }}
+                        <th class="mine-field">{{ $jIndex }}</th>
+                    {{ end }}
+                {{ end }}
+            </tr>
+        {{ end }}
+            <tr>                
+                <th class="mine-field">{{ $iIndex }}</th>
+
             {{ range $jIndex,$jValue := . }}
-                <th class="myClass-{{ $jValue }}" style="height: 2em; width: 2em;cursor: pointer;border: 2px outset #ececec;box-sizing: border-box;" hx-get="boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
+                <th class="myClass-{{ $jValue }} mine-field" style="cursor: pointer;border: 2px outset #ececec;" hx-get="boardclick/{{ $iIndex }}/{{ $jIndex }}" hx-target="#board" hx-swap="outerHTML">
                     {{ if eq $jValue -1 }}☠{{ end }}
                     {{ if eq $jValue 0 }} {{ end }}
                     {{ if eq $jValue 1 }}1{{ end }}

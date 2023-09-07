@@ -25,6 +25,12 @@
 {{template "board.html" . }}{{ end }}
 
 {{define "css"}}
+.mine-field {
+    height: 2em; 
+    width: 2em;
+    box-sizing: border-box;
+}
+
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
