@@ -33,7 +33,21 @@
 
     {{ if eq .IsGameOver true}}
         <p>Game Over</p>
-        {{ if .IsWon}}<h1>YOU WIN!</h1>{{end}}
-        {{ if .IsLost}}<h1>YOU LOSE!</h1>{{end}}
+        {{ if .IsWon}}
+            <dialog open style="position: relative; background: aquamarine;">
+                <h1>YOU WON!</h1>
+                <form method="dialog">
+                    <button>OK</button>
+                </form>
+            </dialog>
+        {{end}}
+        {{ if .IsLost}}
+            <dialog open style="position: relative; background: orangered; color: white;">
+                <h1>☠ YOU LOSE! ☠</h1>
+                <form method="dialog">
+                    <button>OK</button>
+                </form>
+            </dialog>
+        {{end}}
     {{ end }}
 </div>
