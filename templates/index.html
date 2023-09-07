@@ -4,7 +4,7 @@
 <h1>Minesweeper</h1>
 
 <div id="menu">
-    <form hx-post="/newgame" hx-swap="outerHTML" hx-target="#board">
+    <form hx-post="newgame" hx-swap="outerHTML" hx-target="#board">
         <label for="rows">Rows
         <input id="rows" name="rows" type="number" value="10">
         </label>
